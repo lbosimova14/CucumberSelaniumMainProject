@@ -9,8 +9,9 @@ import org.junit.runner.RunWith;
         features = "src/test/resources/features",
         glue = "com/vytrack/step_definitions",
         dryRun = false,
-        tags = "",
-        plugin = {"html:target/default-cucumber-reports"}
+        tags = "@CreateACar",
+        plugin = {"html:target/default-cucumber-reports",//generate reports
+                   "json:target/cucumber.json"}
 )
 public class CucumberRunner {
 

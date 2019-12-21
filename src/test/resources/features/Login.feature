@@ -10,6 +10,7 @@ Feature: Login
 #  In my project, I was trying to keep scenarios short
 
   @store_manager
+
   Scenario: Login as store manager
     Given user is on the login page
     Then user logs in as store manager
@@ -39,3 +40,11 @@ Feature: Login
     Then user enters "wrong_username" username and "UserUser123" password
     And user verifies that "Invalid user name or password." message is displayed
 
+  @driver_with_data_table
+  Scenario: Login as driver(data table example)
+    Given user is on the login page
+    Then user logs in as driver with following credentials
+    |username | user160|
+    |password | UserUser123|
+# we getting this:{username=user160, password=UserUser123}
+    And user verifies that "Quick Launchpad" page subtitle is displayed
