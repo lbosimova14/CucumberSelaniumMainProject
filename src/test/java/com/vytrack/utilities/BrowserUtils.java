@@ -164,24 +164,6 @@ public class BrowserUtils {
         wait.until(ExpectedConditions.titleIs(pageTitle));
     }
 
-    /**
-     * This method will convert list of WebElements into list of string
-     *
-     * @param listOfWebElements
-     * @return list of strings
-     */
-    public static List<String> getListOfString(List<WebElement> listOfWebElements) {
-        List<String> listOfStrings = new ArrayList<>();
-        for (WebElement element : listOfWebElements) {
-            String value = element.getText().trim();
-            //if there is no text
-            //do not add this blank text into list
-            if (value.length() > 0) {
-                listOfStrings.add(value);
-            }
-        }
-        return listOfStrings;
-    }
 
     /**
      * This method will convert/retrieve list of WebElements into list of string
