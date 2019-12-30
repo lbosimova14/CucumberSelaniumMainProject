@@ -11,4 +11,5 @@ public class TopMenuStepDefinitions {
     public void user_navigates_to_then_to(String module, String submodule) {
         loginPage.navigateTo(module, submodule);
     }
+
 }
