@@ -184,4 +184,57 @@ public class BrowserUtils {
         return listOfStrings;
     }
 
+    /**
+     * If checkbox/radio button is selected and selectedOrUnselected is also equals to selected, then method will return true
+     * If checkbox/radio button is not selected and selectedOrUnselected is also equals to unselected, then method will return true
+     * Otherwise, method will return false
+     *
+     * @param checkboxOrRadioButton to check
+     * @param selectedOrUnselected  status of checkbox either selected or unselected
+     * @return
+     */
+    public static boolean checkIfStatusOfCheckBoxORRadioButtonIsCorrect(WebElement checkboxOrRadioButton, String selectedOrUnselected) {
+        if (selectedOrUnselected.endsWith("s")) {
+            selectedOrUnselected = selectedOrUnselected.substring(0, selectedOrUnselected.length() - 1);
+        }
+        if (checkboxOrRadioButton.isSelected() && selectedOrUnselected.equalsIgnoreCase("selected")) {
+            return true;
+        } else if (!checkboxOrRadioButton.isSelected() && selectedOrUnselected.equalsIgnoreCase("unselected")) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * This method will click on radio button/checkbox only in 2 cases:
+     * - if button/checkbox is not selected yet, and selectOrUnselect equals to "select"
+     * - if button/checkbox is already selected, and selectOrUnselect equals to "unselect"
+     * otherwise, it will not do anything
+     *
+     * @param checkboxOrRadioButton to
+     * @param selectOrUnselect
+     */
+    public static void selectOrUnSelectCheckboxOrRadioButton(WebElement checkboxOrRadioButton, String selectOrUnselect) {
+        if (selectOrUnselect.endsWith("s")) {
+            selectOrUnselect = selectOrUnselect.substring(0, selectOrUnselect.length() - 1);
+        }
+        if (!checkboxOrRadioButton.isSelected() && selectOrUnselect.equalsIgnoreCase("select")) {
+            BrowserUtils.clickWithWait(checkboxOrRadioButton);
+        } else if (checkboxOrRadioButton.isSelected() && selectOrUnselect.equalsIgnoreCase("unselect")) {
+            BrowserUtils.clickWithWait(checkboxOrRadioButton);
+        }
+    }
+
+    /**
+     * Capitalize and return string
+     * Before: appLLE
+     * After: Apple
+     *
+     * @param str
+     * @return
+     */
+    public static String capitalizeString(String str) {
+        return str = str.substring(0, 1).toUpperCase() + str.substring(1).toLowerCase();
+    }
+
 }

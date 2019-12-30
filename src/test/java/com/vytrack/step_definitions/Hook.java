@@ -26,10 +26,8 @@ public class Hook {
 
 
         }else{
-            System.out.println("Cleanup!");
             System.out.println("Test completed!");
         }
-        System.out.println("##############################");
         //after evrery test we close browser
         Driver.close();
     }
