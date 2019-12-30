@@ -34,7 +34,7 @@ public class CreateCarStepDefinitions {
         //wait
         createCarPage.waitUntilLoaderMaskDisappear();
         System.out.println(dataTable);
-        int row=1;
+        int row = 1;
         for (Map<String, String> map : dataTable) {
             createCarPage.licensePlateElement.sendKeys(map.get("License Plate"));
             createCarPage.driverElement.sendKeys(map.get("Driver"));
