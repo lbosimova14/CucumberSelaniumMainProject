@@ -18,4 +18,4 @@ Feature: Smoke test
 
   Scenario: Verify Accounts page
     And user navigates to "Customers" then to "Accounts"
-    Then user verifies that "q" page subtitle is displayed
+    Then user verifies that "All Accounts" page subtitle is displayed
