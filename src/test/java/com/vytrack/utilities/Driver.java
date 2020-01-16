@@ -77,6 +77,15 @@ public class Driver {
                         e.printStackTrace();
                     }
                     break;
+                case "remote_firefox":
+                    try {
+                        FirefoxOptions firefoxOptions = new FirefoxOptions();
+                        firefoxOptions.setCapability("platform", Platform.ANY);
+                        driverPool.set(new RemoteWebDriver(new URL("http://ec2-54-166-190-92.compute-1.amazonaws.com:4444/wd/hub"), firefoxOptions));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    break;
             }
 
         }
