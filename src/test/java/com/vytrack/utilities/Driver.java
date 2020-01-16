@@ -17,7 +17,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class Driver {
-
     private static ThreadLocal<WebDriver> driverPool = new ThreadLocal<>();
 
     private Driver() {
@@ -70,14 +69,14 @@ public class Driver {
                     driverPool.set(new SafariDriver());
                     break;
                 case "remote_chrome":
-                    ChromeOptions chromeOptions= new ChromeOptions();
-                    chromeOptions.setCapability("platform", Platform.ANY);
                     try {
-                        driverPool.set(new RemoteWebDriver(new URL("http://ec2-35-171-18-227.compute-1.amazonaws.com/4444/wd/hub"),chromeOptions));
+                        ChromeOptions chromeOptions = new ChromeOptions();
+                        chromeOptions.setCapability("platform", Platform.ANY);
+                        driverPool.set(new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), chromeOptions));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                      break;
+                    break;
             }
 
         }
