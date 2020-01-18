@@ -72,7 +72,7 @@ public class Driver {
                     try {
                         ChromeOptions chromeOptions = new ChromeOptions();
                         chromeOptions.setCapability("platform", Platform.ANY);
-                        driverPool.set(new RemoteWebDriver(new URL("http://ec2-54-166-190-92.compute-1.amazonaws.com:4444/wd/hub"), chromeOptions));
+                        driverPool.set(new RemoteWebDriver(new URL("http://ec2-34-229-251-218.compute-1.amazonaws.com:4444/wd/hub"), chromeOptions));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -81,7 +81,7 @@ public class Driver {
                     try {
                         FirefoxOptions firefoxOptions = new FirefoxOptions();
                         firefoxOptions.setCapability("platform", Platform.ANY);
-                        driverPool.set(new RemoteWebDriver(new URL("http://ec2-54-166-190-92.compute-1.amazonaws.com:4444/wd/hub"), firefoxOptions));
+                        driverPool.set(new RemoteWebDriver(new URL("http://ec2-34-229-251-218.compute-1.amazonaws.com:4444/wd/hub"), firefoxOptions));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
