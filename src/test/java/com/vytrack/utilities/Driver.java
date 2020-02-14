@@ -1,5 +1,6 @@
 package com.vytrack.utilities;
 
+import io.appium.java_client.remote.MobileCapabilityType;
 import io.cucumber.java.hu.De;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.Platform;
@@ -18,7 +19,7 @@ import org.openqa.selenium.safari.SafariDriver;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-
+//this class create new object of WebDriver,everytime we run new scenario
 public class Driver {
     private static ThreadLocal<WebDriver> driverPool = new ThreadLocal<>();
 
@@ -75,7 +76,7 @@ public class Driver {
                     try {
                         ChromeOptions chromeOptions = new ChromeOptions();
                         chromeOptions.setCapability("platform", Platform.ANY);
-                        driverPool.set(new RemoteWebDriver(new URL("http://ec2-54-166-190-92.compute-1.amazonaws.com:4444/wd/hub"), chromeOptions));
+                        driverPool.set(new RemoteWebDriver(new URL("http://localhost:7777/wd/hub"), chromeOptions));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -89,6 +90,20 @@ public class Driver {
                         e.printStackTrace();
                     }
                     break;
+                case "mobile_chrome":
+                    try {
+                        DesiredCapabilities desiredCapabilities=new DesiredCapabilities();
+                        desiredCapabilities.setCapability(MobileCapabilityType.DEVICE_NAME,"Pixel_2");
+                        desiredCapabilities.setCapability(MobileCapabilityType.VERSION,"7.0");
+                        desiredCapabilities.setCapability(MobileCapabilityType.BROWSER_NAME,BrowserType.CHROME);
+                        desiredCapabilities.setCapability(MobileCapabilityType.PLATFORM_NAME,Platform.ANDROID);
+                        driverPool.set(new RemoteWebDriver(new URL("http://localhost:4723/wd/hub"), desiredCapabilities));
+                    } catch (MalformedURLException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                default:
+                    throw new RuntimeException("invalid browser");
             }
 
         }

@@ -54,7 +54,15 @@
             <version>1.7.21</version>
         </dependency>
 
+        <dependency>
+            <groupId>io.appium</groupId>
+            <artifactId>java-client</artifactId>
+            <version>7.3.0</version>
+        </dependency>
+
     </dependencies>
+    <!--  surefire plugins is for run the tests using terminal,parallel excutions
+     dependiencies is library, plugins is to do smth -->
 
     <build>
         <plugins>
@@ -71,6 +79,7 @@
                     <testFailureIgnore>false</testFailureIgnore>
                 </configuration>
             </plugin>
+
             <plugin>
                 <groupId>net.masterthought</groupId>
                 <artifactId>maven-cucumber-reporting</artifactId>
@@ -96,7 +105,7 @@
         </plugins>
     </build>
 
-
+<!-- one method runs per browser,methods means feature files -->
     <profiles>
         <profile>
             <id>Regression</id>
@@ -110,7 +119,7 @@
 
                             <parallel>methods</parallel>
                             <perCoreThreadCount>false</perCoreThreadCount>
-                            <threadCountMethods>2</threadCountMethods>
+                            <threadCountMethods>2</threadCountMethods><!-- How many browsers opening same time -->
 
                             <includes>
                                 <include>**/RegressionRunner.java</include>

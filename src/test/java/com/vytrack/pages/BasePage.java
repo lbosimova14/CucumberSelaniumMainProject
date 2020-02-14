@@ -35,6 +35,7 @@ public class BasePage {
     @FindBy(linkText = "My User")
     public WebElement myUser;
 
+
     public BasePage() {
         //this method requires to provide webdriver object for @FindBy
         //and page class
