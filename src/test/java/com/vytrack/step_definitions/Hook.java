@@ -1,40 +1,40 @@
 package com.vytrack.step_definitions;
 
+import com.vytrack.utilities.ConfigurationReader;
 import com.vytrack.utilities.Driver;
 import io.cucumber.core.api.Scenario;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
+import org.apache.log4j.Logger;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
-
+ //Logger class: This is the central class in the log4j package. Most logging
+       // operations, except configuration, are done through this class.
 public class Hook {
+    private static Logger logger = Logger.getLogger(Hook.class);
 
-
-/*@Befor annotation is coming from Cucumber annotations
-* Hook class is we can say unseen step, which allows us to perform our scenarios or tests
-* Class must be in same package as step definition*/
-    @Before//runs befor each cucumber scenario, it will always runs no matter if scenario passes or fails
-
-    public void setup(){
-        System.out.println("##############################");
-        System.out.println("Test setup!");
-//        Driver.get().manage().window().maximize();
-    }
-//Scenario Interface allows writing text and embedding media into reports, as well as inspecting results
-    @After//i use Scenario as a parameter in my befor /after method
-    public void teardown(Scenario scenario){
-        //if test failed - do this
-        if(scenario.isFailed()){
-            System.out.println("Test failed!");
-            //taking a screenshot
-            byte[] screenshot = ((TakesScreenshot)Driver.get()).getScreenshotAs(OutputType.BYTES);
-           //adding the screenshot to the report
-            scenario.embed(screenshot, "image/png");
-        }else{
-            System.out.println("Cleanup!");
-            System.out.println("Test completed!");
+    @Before
+    public void setup() {
+        logger.info("##############################");
+        logger.info("Test setup!");
+        String browser = ConfigurationReader.getProperty("browser");
+        if (!browser.contains("remote") && !browser.contains("mobile")) {
+            Driver.get().manage().window().maximize();
         }
-        System.out.println("##############################");
+    }
+
+    @After
+    public void teardown(Scenario scenario) {
+        //if test failed - do this
+        if (scenario.isFailed()) {
+            logger.error("Test failed!");
+            byte[] screenshot = ((TakesScreenshot) Driver.get()).getScreenshotAs(OutputType.BYTES);
+            scenario.embed(screenshot, "image/png");
+        } else {
+            logger.info("Cleanup!");
+            logger.info("Test completed!");
+        }
+        logger.info("##############################");
         //after every test, we gonna close browser
         Driver.close();
     }

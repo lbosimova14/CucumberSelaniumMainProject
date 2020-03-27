@@ -3,6 +3,7 @@ package com.vytrack.utilities;
 import io.appium.java_client.remote.MobileCapabilityType;
 import io.cucumber.java.hu.De;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.apache.log4j.Logger;
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
@@ -16,13 +17,14 @@ import org.openqa.selenium.remote.BrowserType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
-
-import java.net.MalformedURLException;
 import java.net.URL;
-//this class create new object of WebDriver,everytime we run new scenario
-public class Driver {
-    private static ThreadLocal<WebDriver> driverPool = new ThreadLocal<>();
 
+
+public class Driver {
+    private static Logger logger = Logger.getLogger(Driver.class);
+    //ThreadLocal driver to ensure thread safety and run tests in parallel.
+    private static ThreadLocal<WebDriver> driverPool = new ThreadLocal<>();
+//  Singlton disign = privite constractor,
     private Driver() {
 
     }
@@ -30,7 +32,7 @@ public class Driver {
     public static WebDriver get() {
         //if this thread doesn't have a web driver yet - create it and add to pool
         if (driverPool.get() == null) {
-            System.out.println("TRYING TO CREATE DRIVER");
+            logger.info("TRYING TO CREATE DRIVER");
             // this line will tell which browser should open based on the value from properties file
             String browserParamFromEnv = System.getProperty("browser");
             String browser = browserParamFromEnv == null ? ConfigurationReader.getProperty("browser") : browserParamFromEnv;
@@ -74,10 +76,12 @@ public class Driver {
                     break;
                 case "remote_chrome":
                     try {
-                        ChromeOptions chromeOptions = new ChromeOptions();
-                        chromeOptions.setCapability("platform", Platform.ANY);
-                        driverPool.set(new RemoteWebDriver(new URL("http://localhost:7777/wd/hub"), chromeOptions));
+                        DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
+                        desiredCapabilities.setBrowserName(BrowserType.CHROME);
+                        desiredCapabilities.setCapability("platform", Platform.ANY);
+                        driverPool.set(new RemoteWebDriver(new URL("http://ec2-18-212-156-23.compute-1.amazonaws.com:4444/wd/hub"), desiredCapabilities));
                     } catch (Exception e) {
+                        logger.error(e.getMessage());
                         e.printStackTrace();
                     }
                     break;
@@ -85,25 +89,27 @@ public class Driver {
                     try {
                         DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
                         desiredCapabilities.setBrowserName(BrowserType.FIREFOX);
-                        driverPool.set(new RemoteWebDriver(new URL("http://ec2-54-166-190-92.compute-1.amazonaws.com:4444/wd/hub"), desiredCapabilities));
+                        desiredCapabilities.setCapability("platform", Platform.ANY);
+                        driverPool.set(new RemoteWebDriver(new URL("http://ec2-18-212-156-23.compute-1.amazonaws.com:4444/wd/hub"), desiredCapabilities));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                     break;
                 case "mobile_chrome":
                     try {
-                        DesiredCapabilities desiredCapabilities=new DesiredCapabilities();
-                        desiredCapabilities.setCapability(MobileCapabilityType.DEVICE_NAME,"Pixel_2");
-                        desiredCapabilities.setCapability(MobileCapabilityType.VERSION,"7.0");
-                        desiredCapabilities.setCapability(MobileCapabilityType.BROWSER_NAME,BrowserType.CHROME);
-                        desiredCapabilities.setCapability(MobileCapabilityType.PLATFORM_NAME,Platform.ANDROID);
+                        DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
+                        desiredCapabilities.setCapability(MobileCapabilityType.DEVICE_NAME, "Pixel_2");
+                        desiredCapabilities.setCapability(MobileCapabilityType.VERSION, "7.0");
+                        desiredCapabilities.setCapability(MobileCapabilityType.BROWSER_NAME, BrowserType.CHROME);
+                        desiredCapabilities.setCapability(MobileCapabilityType.PLATFORM_NAME, Platform.ANDROID);
+                        //                                     address of appium server.
                         driverPool.set(new RemoteWebDriver(new URL("http://localhost:4723/wd/hub"), desiredCapabilities));
-                    } catch (MalformedURLException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                     break;
                 default:
-                    throw new RuntimeException("invalid browser");
+                    throw new RuntimeException("Invalid browser name!");
             }
 
         }
