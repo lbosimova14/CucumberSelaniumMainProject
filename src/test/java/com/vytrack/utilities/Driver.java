@@ -1,5 +1,6 @@
 package com.vytrack.utilities;
 
+import io.appium.java_client.remote.MobileBrowserType;
 import io.appium.java_client.remote.MobileCapabilityType;
 import io.cucumber.java.hu.De;
 import io.github.bonigarcia.wdm.WebDriverManager;
@@ -17,7 +18,10 @@ import org.openqa.selenium.remote.BrowserType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
+
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class Driver {
@@ -25,6 +29,11 @@ public class Driver {
     //ThreadLocal driver to ensure thread safety and run tests in parallel.
     private static ThreadLocal<WebDriver> driverPool = new ThreadLocal<>();
 //  Singlton disign = privite constractor,
+    private static String userName = "vasylfomiuk2";
+    private static String accessKey = "N9rzTpSQYnQFNLe2YPgr";
+    private static final String URL = "https://" + userName + ":" + accessKey + "@hub-cloud.browserstack.com/wd/hub";
+
+
     private Driver() {
 
     }
@@ -89,7 +98,6 @@ public class Driver {
                     try {
                         DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
                         desiredCapabilities.setBrowserName(BrowserType.FIREFOX);
-                        desiredCapabilities.setCapability("platform", Platform.ANY);
                         driverPool.set(new RemoteWebDriver(new URL("http://ec2-18-212-156-23.compute-1.amazonaws.com:4444/wd/hub"), desiredCapabilities));
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -97,13 +105,43 @@ public class Driver {
                     break;
                 case "mobile_chrome":
                     try {
+                        //chrome options are used to parametrize browser
+                        ChromeOptions chromeOptions = new ChromeOptions();
+                        chromeOptions.addArguments("--incognito");
                         DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
                         desiredCapabilities.setCapability(MobileCapabilityType.DEVICE_NAME, "Pixel_2");
                         desiredCapabilities.setCapability(MobileCapabilityType.VERSION, "7.0");
-                        desiredCapabilities.setCapability(MobileCapabilityType.BROWSER_NAME, BrowserType.CHROME);
+                        desiredCapabilities.setCapability(MobileCapabilityType.BROWSER_NAME, MobileBrowserType.CHROME);
                         desiredCapabilities.setCapability(MobileCapabilityType.PLATFORM_NAME, Platform.ANDROID);
-                        //                                     address of appium server.
+                        desiredCapabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
+
                         driverPool.set(new RemoteWebDriver(new URL("http://localhost:4723/wd/hub"), desiredCapabilities));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case "mobile_chrome_remote":
+                    try {
+                    DesiredCapabilities caps = new DesiredCapabilities();
+                    caps.setCapability("browserName", "android");
+                    caps.setCapability("device", "Samsung Galaxy S10");
+                    caps.setCapability("realMobile", "true");
+                    caps.setCapability("os_version", "9.0");
+                    caps.setCapability("name", "VyTrack tests");
+                    driverPool.set(new RemoteWebDriver(new URL(URL), caps));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+                case "mobile_safari_remote":
+                    try {
+                        DesiredCapabilities caps = new DesiredCapabilities();
+                        caps.setCapability("browserName", "safari");
+                        caps.setCapability("device", "iPhone 11 Pro Max");
+                        caps.setCapability("os_version", "13");
+                        caps.setCapability("realMobile", "true");
+                        caps.setCapability("name", "VyTrack tests");
+                        driverPool.set(new RemoteWebDriver(new URL(URL), caps));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
