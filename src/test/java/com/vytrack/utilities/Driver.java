@@ -18,27 +18,25 @@ import org.openqa.selenium.remote.BrowserType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
-
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
+
 
 
 public class Driver {
     private static Logger logger = Logger.getLogger(Driver.class);
     //ThreadLocal driver to ensure thread safety and run tests in parallel.
     private static ThreadLocal<WebDriver> driverPool = new ThreadLocal<>();
-//  Singlton disign = privite constractor,
     private static String userName = "vasylfomiuk2";
     private static String accessKey = "N9rzTpSQYnQFNLe2YPgr";
     private static final String URL = "https://" + userName + ":" + accessKey + "@hub-cloud.browserstack.com/wd/hub";
 
-
+    //  Singlton design = privite constractor,We cannot create object like that
+    //Driver driverObj=new Driver();
     private Driver() {
 
     }
 
-    public static WebDriver get() {
+    public static WebDriver get() {//usually will be WebDriver driver=new ChromeDriver();
         //if this thread doesn't have a web driver yet - create it and add to pool
         if (driverPool.get() == null) {
             logger.info("TRYING TO CREATE DRIVER");
@@ -47,7 +45,8 @@ public class Driver {
             String browser = browserParamFromEnv == null ? ConfigurationReader.getProperty("browser") : browserParamFromEnv;
             switch (browser) {
                 case "chrome":
-                    WebDriverManager.chromedriver().setup();
+                    WebDriverManager.chromedriver().setup();//coming from bonigarcia wdmanager dependency
+                    //instead of System.setProperty("Webdriver.chrome.driver","path of chrome driver.exe")
                     driverPool.set(new ChromeDriver());
                     break;
                 case "chrome_headless":
@@ -88,8 +87,8 @@ public class Driver {
                         DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
                         desiredCapabilities.setBrowserName(BrowserType.CHROME);
                         desiredCapabilities.setCapability("platform", Platform.ANY);
-                        driverPool.set(new RemoteWebDriver(new URL("http://ec2-18-212-156-23.compute-1.amazonaws.com:4444/wd/hub"), desiredCapabilities));
-                    } catch (Exception e) {
+                        driverPool.set(new RemoteWebDriver(new URL("http://localhost:7777/wd/hub"), desiredCapabilities));
+                    } catch (Exception e) {     //"http://ec2-18-212-156-23.compute-1.amazonaws.com:4444/wd/hub"
                         logger.error(e.getMessage());
                         e.printStackTrace();
                     }
