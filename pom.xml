@@ -8,12 +8,13 @@
     <artifactId>Summer2019OnlineCucumberSelenium</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-    </properties>
+<!--    <properties>-->
+<!--        <maven.compiler.source>1.8</maven.compiler.source>-->
+<!--        <maven.compiler.target>1.8</maven.compiler.target>-->
+<!--    </properties>-->
 
     <dependencies>
+        <!-- webdrivermanager is for runs driver -->
         <dependency>
             <groupId>io.github.bonigarcia</groupId>
             <artifactId>webdrivermanager</artifactId>
@@ -41,7 +42,7 @@
         </dependency>
 
 
-        <!-- https://mvnrepository.com/artifact/io.cucumber/cucumber-junit -->
+        <!-- running test -->
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-junit</artifactId>
@@ -53,8 +54,8 @@
         <artifactId>slf4j-simple</artifactId>
         <version>1.7.21</version>
     </dependency>
-     <!--   log4j for logging,always log important steps inthe test execution. it helps me
-      debug wheb there is failure.It is not replacement for HTML reports.-->
+     <!--   log4j for logging,always log important steps in the test execution. it helps me
+      debug when there is failure.It is not replacement for HTML reports.-->
     <dependency>
         <groupId>log4j</groupId>
         <artifactId>log4j</artifactId>
@@ -72,6 +73,17 @@
 <!-- This plugin(built configuration) is for run your tests through terminal with mvn command-->
 <build>
     <plugins>
+
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.8.1</version>
+            <configuration>
+                <source>1.8</source>
+                <target>1.8</target>
+            </configuration>
+        </plugin>
+
         <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
@@ -79,7 +91,7 @@
             <configuration>
                 <parallel>classes</parallel>
                 <perCoreThreadCount>false</perCoreThreadCount>
-                <threadCountMethods>2</threadCountMethods>
+                <useUnlimitedThreads>true</useUnlimitedThreads>
                 <includes>
                     <include>**/CucumberRunner.java</include>
                 </includes>
@@ -100,11 +112,11 @@
                         <goal>generate</goal>
                     </goals>
                     <configuration>
-                        <projectName>Cucumber HTML Reports</projectName>
+                        <projectName>Cucumber HTML Reports</projectName><!-- we put report name -->
                         <outputDirectory>${project.build.directory}</outputDirectory>
                         <inputDirectory>${project.build.directory}</inputDirectory>
-                        <jsonFiles>
-                            <param>**/cucumber*.json</param>
+                        <jsonFiles> <!--json file is mandatory -->
+                            <param>**/cucumber*.json</param><!--report first read json file then generate maven html report -->
                         </jsonFiles>
                     </configuration>
                 </execution>
@@ -115,9 +127,8 @@
 
 
 <!-- This alternative built configuration is for Regression testes, We created profile
-and it target Regression class, we type in terminal: mvn test -P Regression and it runs Regression.class, Not CucumberRunner class.
-one method runs per browser,methods means feature files
--->
+and it target Regression class, we type in terminal: mvn test -P Regression (Regression coming from my id name) and it runs Regression.class,
+Not CucumberRunner class. 0ne method runs per browser,methods means feature files-->
 <profiles>
     <profile>
         <id>Regression</id>
@@ -129,9 +140,10 @@ one method runs per browser,methods means feature files
                     <version>3.0.0-M3</version>
                     <configuration>
 
-                        <parallel>methods</parallel>
+                        <parallel>methods</parallel> <!-- methods == feature file -->
                         <perCoreThreadCount>false</perCoreThreadCount>
-                        <threadCountMethods>2</threadCountMethods><!-- How many browsers opening same time -->
+                        <threadCountMethods>2</threadCountMethods><!-- How many browsers opening at the same time
+                         browser count-->
 
                         <includes>
                             <include>**/RegressionRunner.java</include><!--My RegressionRunner class is running as parallel -->

@@ -6,7 +6,7 @@ import org.junit.runner.RunWith;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(
-        features = "@target/rerun.txt",//@target/rerun is location, .txt is report type
+        features = "@target/rerun.txt",//any failing tests stored in .txt
         glue = "com/vytrack/step_definitions",
         plugin = {
                 "html:target/rerun-default-cucumber-reports",

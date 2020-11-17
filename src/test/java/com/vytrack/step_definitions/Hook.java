@@ -39,3 +39,13 @@ public class Hook {
         Driver.close();
     }
 }
+/*
+* Screenshots are desirable for bug analysis. Selenium can automatically take screenshots during execution. You need to type cast WebDriver instance to TakesScreenshot.
+
+Taking Screenshot in Selenium is just 3 Step process:
+
+Step 1: Convert web driver object to TakesScreenshot
+TakesScreenshot takesScreenshot = (TakesScreenshot) driver;
+Step 2: Call getScreenshotAs method to create image file
+File source = takesScreenshot.getScreenshotAs(OutputType.FILE);
+Step 3: Copy file to Desired Location*/

@@ -9,7 +9,7 @@ import org.junit.runner.RunWith;
         features = {
                 "src/test/resources/features/activities",
                 "src/test/resources/features/fleet",
-        },
+        },//we dont specify tags here, we list as many as feature file
         glue = "com/vytrack/step_definitions",
         dryRun = false,
         plugin = {"html:target/default-cucumber-reports",

@@ -13,7 +13,7 @@ public class ConfigurationReader {
     //this class will be responsible for loading properties file and will provide access
     //to values based on key names
     //we use Properties class to load custom .properties files
-    private static Properties configFile;
+    private static Properties configFile; //Singleton, It creates only one object for entire project
 // A static block is used for initializing static variables.
 // If static variables require additional, multi-statement logic while initialization, then a static block can be used.
 

@@ -14,7 +14,7 @@ public class LoginStepDefinitions {
     private static Logger logger = Logger.getLogger(LoginStepDefinitions.class);
     // Write code here that turns the phrase above into concrete actions
     LoginPage loginPage = new LoginPage();//created login page object
-
+//logger.info – print informational message that highlights the progress of the application
     @Given("user is on the login page")
     public void user_is_on_the_login_page() {
         logger.info("I am on the login page");

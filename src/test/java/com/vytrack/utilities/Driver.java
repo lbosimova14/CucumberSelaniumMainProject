@@ -2,7 +2,6 @@ package com.vytrack.utilities;
 
 import io.appium.java_client.remote.MobileBrowserType;
 import io.appium.java_client.remote.MobileCapabilityType;
-import io.cucumber.java.hu.De;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.Platform;
@@ -25,6 +24,9 @@ import java.net.URL;
 public class Driver {
     private static Logger logger = Logger.getLogger(Driver.class);
     //ThreadLocal driver to ensure thread safety and run tests in parallel.
+    //Wrap Webdriver object and clone it, if you have 10 test, opens 10 browser==10 webdriver
+    //in case of Singlton:we can only run 1 test per 1 browser.In case of TreadLocal we wrap up
+    //WebDriver duplicate at the run time.
     private static ThreadLocal<WebDriver> driverPool = new ThreadLocal<>();
     private static String userName = "vasylfomiuk2";
     private static String accessKey = "N9rzTpSQYnQFNLe2YPgr";
