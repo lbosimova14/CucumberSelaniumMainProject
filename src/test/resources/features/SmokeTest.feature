@@ -7,7 +7,7 @@ Feature: Smoke test
 
   @CT25-20
   Scenario: Verify dashboard page
-    And user verifies that "All Manage" page subtitle is displayed
+    And user verifies that "All Manage Dashboards" page subtitle is displayed
 
   @CT25-19
   Scenario: Verify Manage Dashboards page
